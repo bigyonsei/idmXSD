@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by Ghang Lee (Yonsei University) -->
+<xs:schema xmlns:idm="https://standards.buildingsmart.org/IDM/idmXML/0.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="specId.xsd"/>
+	<xs:include schemaLocation="authoring.xsd"/>
+	<xs:include schemaLocation="uc.xsd"/>
+	<xs:element name="er">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="specId"/>
+				<xs:element ref="authoring"/>
+				<xs:element name="correspondingMvd" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="basisSchema" type="xs:string"/>
+						<xs:attribute name="correspondingMvdName" type="xs:string"/>
+						<xs:attribute name="correspondingMvdComments" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="informationUnit" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element name="constraint" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="constraintId" type="xs:string" use="required"/>
+						<xs:attribute name="associatedInformationUnit" use="optional"/>
+						<xs:attribute name="associatedBusinessRule" use="optional"/>
+						<xs:attribute name="constraintDescription" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="subEr" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="er"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="comments" type="xs:string"/>
+		</xs:complexType>
+		<xs:key name="key_er_uuid">
+			<xs:selector xpath="./er/specId"/>
+			<xs:field xpath="@uuid"/>
+		</xs:key>
+		<xs:key name="key_informationUnitId">
+			<xs:selector xpath="./er/informationUnit"/>
+			<xs:field xpath="@informationUnitId"/>
+		</xs:key>
+		<xs:key name="key_constraint">
+			<xs:selector xpath="./er/constraint"/>
+			<xs:field xpath="@constraintId"/>
+		</xs:key>
+		<xs:keyref name="keyref_associatedInformationUnit" refer="key_informationUnitId">
+			<xs:selector xpath="./er/constraint"/>
+			<xs:field xpath="@associatedInformationUnit"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_associatedBusinessRules" refer="key_businessRuleId">
+			<xs:selector xpath="./er/constraint"/>
+			<xs:field xpath="@associatedBusinessRule"/>
+		</xs:keyref>
+	</xs:element>
+	<!-- Information Unit -->
+	<xs:element name="informationUnit">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="subInformationUnit" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="unbounded">
+							<xs:element ref="informationUnit"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="textualExample" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="textualExampleDescription" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="graphicalExample" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="graphicalExampleFullFilePath" type="xs:string" use="required"/>
+						<xs:attribute name="graphicalExampleDescription" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="correspondingExternalElement" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="externalElementBasis" type="xs:string" use="required"/>
+						<xs:attribute name="externalElementName" type="xs:string" use="required"/>
+						<xs:attribute name="externalElementComments" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="informationUnitId" type="xs:string" use="required"/>
+			<xs:attribute name="informationUnitName" type="xs:string" use="required"/>
+			<xs:attribute name="informationUnitDataType" type="xs:string" use="required"/>
+			<xs:attribute name="isMandatory" type="xs:boolean" use="required"/>
+			<xs:attribute name="definition" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

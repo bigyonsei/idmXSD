@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by Ghang Lee (Yonsei University) -->
+<xs:schema xmlns:idm="https://standards.buildingsmart.org/IDM/idmXML/0.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="specId.xsd"/>
+	<xs:include schemaLocation="authoring.xsd"/>
+	<xs:element name="uc">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="specId"/>
+				<xs:element ref="authoring"/>
+				<xs:element name="region" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="regionType" type="xs:string" use="required"/>
+						<xs:attribute name="regionValue" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="isoProjectPhase" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="isoProjectPhaseName" type="xs:string" use="required"/>
+						<xs:attribute name="isoProjectPhaseDescriptionOutcomes" type="xs:string" use="optional"/>
+						<xs:attribute name="isoProjectPhaseDescriptionInformationRequirements" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="localProjectPhaseClassification" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="localProjectPhase" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="localProjectPhaseName" type="xs:string" use="required"/>
+									<xs:attribute name="localProjectPhaseDescriptionOutcomes" type="xs:string" use="optional"/>
+									<xs:attribute name="localProjectPhaseDescriptionInformationRequirements" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="localProjectPhaseClassificationStandard" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="businessRule" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="constructionEntityClassification" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="constructionEntity" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="constructionEntityName" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="constructionEntityStandard" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="actorClassification" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="subUc" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="uc"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="language" type="xs:string" use="required"/>
+			<xs:attribute name="useGroup" type="xs:string" use="required"/>
+			<xs:attribute name="use" type="xs:string" use="optional"/>
+			<xs:attribute name="summary" type="xs:string" use="required"/>
+			<xs:attribute name="aimAndScope" type="xs:string" use="required"/>
+			<xs:attribute name="benefits" type="xs:string" use="optional"/>
+			<xs:attribute name="scopeKeywords" type="xs:string" use="optional"/>
+			<xs:attribute name="benefitKeywords" type="xs:string" use="optional"/>
+			<xs:attribute name="limitations" type="xs:string" use="optional"/>
+			<xs:attribute name="basisStandards" type="xs:string" use="optional"/>
+			<xs:attribute name="references" type="xs:string" use="optional"/>
+			<xs:attribute name="requiredResources" type="xs:string"/>
+			<xs:attribute name="requiredCompetencies" type="xs:string"/>
+			<xs:attribute name="notes"/>
+		</xs:complexType>
+		<xs:key name="key_businessRuleId">
+			<xs:selector xpath="idm/uc/busuinessRule"/>
+			<xs:field xpath="@businessRuleId"/>
+		</xs:key>
+		<xs:key name="key_uc_uuid">
+			<xs:selector xpath="specId"/>
+			<xs:field xpath="@uuid"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="actorClassification">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="actor" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="actorClassificationStandard" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="actor">
+		<xs:complexType>
+			<xs:attribute name="actorRole" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="businessRule">
+		<xs:complexType>
+			<xs:attribute name="businessRuleId" type="xs:string" use="required"/>
+			<xs:attribute name="businessRuleName" type="xs:string" use="required"/>
+			<xs:attribute name="proposition" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

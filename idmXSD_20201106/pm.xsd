@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by Ghang Lee (Yonsei University) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="specId.xsd"/>
+	<xs:include schemaLocation="authoring.xsd"/>
+	<xs:include schemaLocation="uc.xsd"/>
+	<xs:include schemaLocation="er.xsd"/>
+	<xs:attribute name="attribute-name" type="xs:string" default="string-value"/>
+	<xs:element name="pm">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="specId"/>
+				<xs:element ref="authoring"/>
+				<xs:element name="associatedPmDiagram" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="pmElement" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="pmRelation" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="bpmnId" use="required"/>
+									<xs:attribute name="connectedTo" use="required"/>
+									<xs:attribute name="connectedFrom" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="dataObjectEr" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="dataObjectErId" type="xs:string" use="required"/>
+									<xs:attribute name="associatedDataObject" type="xs:NCName" use="required"/>
+									<xs:attribute name="associatedEr" type="xs:NCName" use="optional"/>
+									<xs:attribute name="dataObjectErDescription" type="xs:string" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="activityBusinessRule" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="activityBusinessRuleId" type="xs:string" use="required"/>
+									<xs:attribute name="associatedActivity" type="xs:NCName" use="required"/>
+									<xs:attribute name="associatedBusinessRule" type="xs:NCName" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="pmDiagramId" type="xs:string" use="required"/>
+						<xs:attribute name="pmDiagramName" type="xs:string" use="required"/>
+						<xs:attribute name="pmDiagramFileName" type="xs:string" use="required"/>
+						<xs:attribute name="pmDiagramDescription" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="associatedImDiagram" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="associatedTmDiagram" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="tmDiagramId" type="xs:string" use="required"/>
+									<xs:attribute name="tmDiagramName" type="xs:string" use="required"/>
+									<xs:attribute name="tmDiagramFileName" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="imDiagramId" type="xs:string" use="required"/>
+						<xs:attribute name="imDiagramName" type="xs:string" use="required"/>
+						<xs:attribute name="imDiagramFileName" type="xs:string" use="required"/>
+						<xs:attribute name="imDiagramDescription" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="subPm" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="pm"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="key_pm_uuid">
+			<xs:selector xpath="./pm/specId"/>
+			<xs:field xpath="@uuid"/>
+		</xs:key>
+		<xs:key name="key_pmDiagramId">
+			<xs:selector xpath="./pm/associatedPmDiagram"/>
+			<xs:field xpath="@pmDiagramId"/>
+		</xs:key>
+		<xs:key name="key_pmElement_bpmnId">
+			<xs:selector xpath="./pm/associatedPmDiagram/pmElement"/>
+			<xs:field xpath="@bpmnId"/>
+		</xs:key>
+		<xs:key name="key_pmRelation_bpmnId">
+			<xs:selector xpath="./pm/associatedPmDiagram/pmRelation"/>
+			<xs:field xpath="@bpmnId"/>
+		</xs:key>
+		<xs:key name="key_dataObjectErId">
+			<xs:selector xpath="./pm/associatedPmDiagram/dataObject"/>
+			<xs:field xpath="@dataObjectErId"/>
+		</xs:key>
+		<xs:key name="key_activityBusinessRuleId">
+			<xs:selector xpath="./pm/associatedPmDiagram/activityBusinessRule"/>
+			<xs:field xpath="@activityBusinessRuleId"/>
+		</xs:key>
+		<xs:key name="key_associatedImDiagram">
+			<xs:selector xpath="./pm/associatedImDiagram"/>
+			<xs:field xpath="@imDiagramId"/>
+		</xs:key>
+		<xs:key name="key_associatedTmDiagram">
+			<xs:selector xpath="./pm/associatedImDiagram/associatedTmDiagram"/>
+			<xs:field xpath="@tmDiagramId"/>
+		</xs:key>
+		<xs:keyref name="keyref_connectedTo" refer="key_pmElement_bpmnId">
+			<xs:selector xpath="./pm/associatedPmDiagram/pmRelation"/>
+			<xs:field xpath="@connectedTo"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_connectedFrom" refer="key_pmElement_bpmnId">
+			<xs:selector xpath="./pm/associatedPmDiagram/pmRelation"/>
+			<xs:field xpath="@connectedFrom"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_associatedDataObject" refer="key_pmElement_bpmnId">
+			<xs:selector xpath="./pm/associatedPmDiagram/dataObjectEr"/>
+			<xs:field xpath="@associatedDataObject"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_associatedEr" refer="key_er_uuid">
+			<xs:selector xpath="./pm/associatedPmDiagram/dataObjectEr"/>
+			<xs:field xpath="@associatedEr"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_associatedActivity" refer="key_pmElement_bpmnId">
+			<xs:selector xpath="./pm/associatedPmDiagram/activityBusinessRule"/>
+			<xs:field xpath="@associatedActivity"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_associatedBusinessRule" refer="key_businessRuleId">
+			<xs:selector xpath="./pm/associatedPmDiagram/acivityBusinessRule"/>
+			<xs:field xpath="@associatedBusinessRule"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="pmElement">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="pmElementActor" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sender" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="actor" minOccurs="1" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="receiver" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="actor" minOccurs="1" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="bpmnId" type="xs:string" use="required"/>
+			<xs:attribute name="pmElementType" type="xs:string" use="required"/>
+			<xs:attribute name="pmElementName" type="xs:string" use="required"/>
+			<xs:attribute name="pmElementId" type="xs:string" use="optional"/>
+			<xs:attribute name="pmElementDescription" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
