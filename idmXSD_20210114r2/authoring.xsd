@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by Ghang Lee (Yonsei University) -->
+<xs:schema xmlns:idm="https://standards.buildingsmart.org/IDM/idmXML/0.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="authoring">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="author" maxOccurs="unbounded"/>
+				<xs:element name="changeLog" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="change" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="changedElement" type="xs:string" use="required"/>
+									<xs:attribute name="changedFrom" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="serialNumber" type="xs:string" use="required"/>
+						<xs:attribute name="changeDate" type="xs:date" use="required"/>
+						<xs:attribute name="changeTime" type="xs:time" use="required"/>
+						<xs:attribute name="changeSummary" type="xs:string" use="required"/>
+						<xs:attribute name="changedBy" type="xs:NCName" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="committee" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="member" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="memberId" type="xs:NCName" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="leader" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="leaderId" type="xs:NCName" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="publisher" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="location" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="copyright" type="xs:string" use="optional"/>
+		</xs:complexType>
+		<xs:key name="key_serialNumber">
+			<xs:selector xpath="./authoring/changeLog | ./uc/authoring/changeLog | ./pm/authoring/changeLog | ./er/authoring/changeLog"/>
+			<xs:field xpath="@serialNumber"/>
+		</xs:key>
+		<xs:key name="key_authorId">
+			<xs:selector xpath="./authoring/author | ./uc/authoring/author | ./pm/authoring/author | ./er/authoring/author"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+		<xs:keyref name="keyref_changedBy" refer="key_authorId">
+			<xs:selector xpath="./authoring/author | ./uc/authoring/author | ./pm/authoring/author | ./er/authoring/author"/>
+			<xs:field xpath="@id"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_member" refer="key_authorId">
+			<xs:selector xpath="./authoring/committee/member | ./uc/authoring/committee/member | ./pm/authoring/committee/member | ./er/authoring/committee/member"/>
+			<xs:field xpath="@memberId"/>
+		</xs:keyref>
+		<xs:keyref name="keyref_leader" refer="key_authorId">
+			<xs:selector xpath="./authoring/committee/leader | ./uc/authoring/committee/leader | ./pm/authoring/committee/leader | ./er/authoring/committee/leader"/>
+			<xs:field xpath="@leaderId"/>
+		</xs:keyref>
+	</xs:element>
+	<!--Author-->
+	<xs:element name="author">
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:string" use="required"/>
+			<xs:attribute name="emailAddress" type="xs:string" use="required"/>
+			<xs:attribute name="firstName" type="xs:string" use="required"/>
+			<xs:attribute name="lastName" type="xs:string" use="required"/>
+			<xs:attribute name="affiliation" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

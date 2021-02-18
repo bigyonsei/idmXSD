@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by Ghang Lee (Yonsei University) -->
+<xs:schema xmlns:idm="https://standards.buildingsmart.org/IDM/idmXML/0.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="specId.xsd"/>
+	<xs:include schemaLocation="authoring.xsd"/>
+	<xs:include schemaLocation="uc.xsd"/>
+	<xs:include schemaLocation="pm.xsd"/>
+	<xs:include schemaLocation="er.xsd"/>
+	<xs:element name="idm">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="specId"/>
+				<xs:element ref="authoring"/>
+				<xs:element ref="uc"/>
+				<xs:element ref="pm" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="er" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="subIdm" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="idm"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="key_idm_guid">
+			<xs:selector xpath="./specId"/>
+			<xs:field xpath="@guid"/>
+		</xs:key>
+	</xs:element>
+</xs:schema>
