@@ -1,3 +1,4 @@
 # idmXSD
 
-### 스키마 수정에 따른 버전별 xsd파일 및 예시 xml, xslt, 웹상으로 출력했을 때의 이미지, pdf 파일등을 함께 업로드
+idmXSD is an XML data schema for efficiently exchaning, sharing, and reusing information delivery manaul (IDM)/information delivery specification (IDS) documents. IDM/IDS is an ISO standard method (ISO 29481-1) for specifying information requirements for use cases. 
+This site provides the lastest IDM/IDS data schema and examples.
