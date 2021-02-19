@@ -1,1 +1,1 @@
-# IDM Schema File Uploaded (PDF Extention)
+# IDM Schema File Uploaded (XSD, PDF Extention)
