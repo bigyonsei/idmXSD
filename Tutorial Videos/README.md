@@ -1,4 +1,4 @@
-# Tutorial Video Links for XPPM and Data Center
+# Tutorial Video Links
 
 ## We are offering Tutorial Videos for IDM. Please visit our Youtube Channel below 
 
