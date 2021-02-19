@@ -6,12 +6,12 @@
     <xsl:template match="/">
 
         <html>
-            <!--title : 창 제목-->
+            <!--title : Window Title-->
             <title><xsl:value-of select="idm/specId/@fullTitle"/></title>
 
-            <!--각 페이지 디자인 설정-->
+            <!--each page's design-->
             <style> 
-                <!--폰트 설정-->
+                <!--font setting-->
                 
                 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue');
                 <!--
@@ -32,7 +32,7 @@
                 text-align: left;
                 }
 
-                <!--표지-->
+                <!--cover-->
                 .cover {
                 width: 794px;
                 margin-left: 20px
@@ -40,7 +40,7 @@
                 background-color: white;
                 }
 
-                <!--본 내용 페이지-->
+                <!--contents pages-->
                 .page {
                 width: 794px;
                 margin-left: 20px;
@@ -160,7 +160,7 @@
             </style>
 
             <xsl:call-template name="cover"/>
-            <!--이 문서는 pm, er파트는 출력 안되게 함
+            <!--this example doesn't contail PM or ER
             <xsl:call-template name="processMap"/>
             <xsl:call-template name="exchangeRequirement"/>
             -->
@@ -328,17 +328,17 @@
     <xsl:template name="informationUnit">
         <div class="page">
             <table class="con_table" style="width: 789px; border-collapse:collapse;">
-                <!--Information Unit 이름-->
+                <!--Information Unit name-->
                 <tr>
                     <th colspan="3" style="width: 789px;"><xsl:value-of select="@name"/></th>
                 </tr>
-                <!--Information Unit 설명-->
+                <!--Information Unit description-->
                 <tr>
                     <td colspan="3" style="width: 789px; padding-left: 150px; padding-right: 150px;">
                     <xsl:value-of select="@definition"/></td>
                 </tr>
                 <tr>
-                <!--이미지 예시-->
+                <!--graphical example-->
                 <xsl:for-each select="graphicalExample">
                     <td style="width=66%; background-color:white">
                         
@@ -353,24 +353,24 @@
                     <xsl:for-each select="subInformationUnit/informationUnit">
                         <td style="background-color:white; vertical-align:top;">
                             <table class="con_table" style="width: 260px; height: auto; background-color:white; height: px; border-collapse: collapse;">
-                                <!--이름-->
+                                <!--name-->
                                 <tr>
                                     <td colspan="2" style="padding-left:10px; font-size: 12pt; font-family: 'Bebas Neue', cursive; padding-top:10px; text-align:left; background-color:white; border-color: white;"><xsl:value-of select="@name"/></td>
                                 </tr>
-                                <!--설명-->
+                                <!--description-->
                                 <tr>
                                 <td style="vertical-align: top; border-color:white; background-color:white;border-collapse:collapse;">
                                 <img width="20px" height="auto" src="https://blog.kakaocdn.net/dn/boyzix/btqSGj8ooIZ/LgTTWnz5UcEUXnkzpaEtKk/img.png"/></td>
                                 <td style="margin:0px; padding:0px; font-size:12px; text-align:left; background-color:white;border-color:white;"><xsl:value-of select="@definition"/></td>
                                 </tr>
-                                <!--텍스트 예시-->
+                                <!--text example-->
                                 <xsl:for-each select="textualExample">
                                 <tr>
                                 <td style="background-color:white;border-color:white;"></td>
                                     <td style="color:#91C9D5; font-size:8px; text-align:left; background-color:white;border-color: white;">example:<xsl:value-of select="@description"/></td>
                                 </tr>
                                 </xsl:for-each>
-                                <!--이미지 예시-->
+                                <!--graphical example-->
                                 <xsl:for-each select="graphicalExample">
                                 <tr>
                                     <td colspan="2" style="vertical-align: bottom; background-color:white; border-color: white;">
